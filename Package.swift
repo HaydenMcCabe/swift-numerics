@@ -22,7 +22,7 @@ let package = Package(
   dependencies: [
   ],
   targets: [
-    .target(name: "ComplexModule", dependencies: ["RealModule"]),
+    .target(name: "ComplexModule", dependencies: ["RealModule", "_NumericsShims"]),
     .target(name: "Numerics", dependencies: ["ComplexModule", "RealModule"]),
     .target(name: "_NumericsShims", dependencies: []),
     .target(name: "RealModule", dependencies: ["_NumericsShims"]),

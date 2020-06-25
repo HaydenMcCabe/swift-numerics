@@ -388,20 +388,415 @@ HEADER_SHIM long double libm_lgammal(long double x, int *signp) {
 // it doesn't make sense to benchmark against it (and these will
 // fail to link if used there).
 
-typedef struct { double real; double imag; } CComplex;
+// MARK: - complex functions for double
+typedef struct { double real; double imag; } CComplexDouble;
 
-HEADER_SHIM CComplex libm_cdiv(CComplex z, CComplex w) {
+HEADER_SHIM CComplexDouble libm_cdiv(CComplexDouble z, CComplexDouble w) {
   double _Complex a = { z.real, z.imag };
   double _Complex b = { w.real, w.imag };
   double _Complex c = a/b;
-  return (CComplex){ __real__ c, __imag__ c };
+  return (CComplexDouble){ __real__ c, __imag__ c };
 }
 
-HEADER_SHIM CComplex libm_cmul(CComplex z, CComplex w) {
+HEADER_SHIM CComplexDouble libm_cmul(CComplexDouble z, CComplexDouble w) {
   double _Complex a = { z.real, z.imag };
   double _Complex b = { w.real, w.imag };
   double _Complex c = a*b;
-  return (CComplex){ __real__ c, __imag__ c };
+  return (CComplexDouble){ __real__ c, __imag__ c };
 }
 
+// MARK: - complex functions for double
+HEADER_SHIM double libm_cabs(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  return __builtin_cabs(a);
+}
+
+HEADER_SHIM CComplexDouble libm_cacos(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_cacos(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_cacosh(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_cacosh(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM double libm_carg(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  return __builtin_carg(a);
+}
+
+HEADER_SHIM CComplexDouble libm_casin(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_casin(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_casinh(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_casinh(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_catan(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_catan(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_catanh(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_catanh(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_ccos(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_ccos(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_ccosh(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_ccosh(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_cexp(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_cexp(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM double libm_cimag(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  return __builtin_cimag(a);
+}
+
+HEADER_SHIM CComplexDouble libm_clog(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_clog(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_conj(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_conj(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_cpow(CComplexDouble z, CComplexDouble w) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = { w.real, w.imag};
+  double _Complex c = __builtin_cpow(a, b);
+  return (CComplexDouble){__real__ c, __imag__ c };
+}
+
+HEADER_SHIM CComplexDouble libm_cproj(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_cproj(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM double libm_creal(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  return __builtin_creal(a);
+}
+
+HEADER_SHIM CComplexDouble libm_csin(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_csin(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_csinh(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_csinh(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_csqrt(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_csqrt(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_ctan(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_ctan(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+HEADER_SHIM CComplexDouble libm_ctanh(CComplexDouble z) {
+  double _Complex a = { z.real, z.imag};
+  double _Complex b = __builtin_ctanh(a);
+  return (CComplexDouble){__real__ b, __imag__ b };
+}
+
+// MARK: - complex functions for float
+typedef struct { float real; float imag; } CComplexFloat;
+
+HEADER_SHIM float libm_cabsf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  return __builtin_cabs(a);
+}
+
+HEADER_SHIM CComplexFloat libm_cacosf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_cacosf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_cacoshf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_cacoshf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM float libm_cargf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  return __builtin_cargf(a);
+}
+
+HEADER_SHIM CComplexFloat libm_casinf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_casinf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_casinhf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_casinhf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_catanf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_catanf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_catanhf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_catanhf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_ccosf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_ccosf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_ccoshf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_ccoshf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_cexpf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_cexpf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_cimagf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_cimagf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_clogf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_clogf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_conjf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_conjf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_cpowf(CComplexFloat z, CComplexFloat w) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = { w.real, w.imag};
+  float _Complex c = __builtin_cpowf(a, b);
+  return (CComplexFloat){__real__ c, __imag__ c};
+}
+
+HEADER_SHIM CComplexFloat libm_cprojf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_cprojf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM float libm_crealf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  return __builtin_crealf(a);
+}
+
+HEADER_SHIM CComplexFloat libm_csinf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_csinf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_csinhf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_csinhf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_csqrtf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_csqrtf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_ctanf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_ctanf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat libm_ctanhf(CComplexFloat z) {
+  float _Complex a = { z.real, z.imag};
+  float _Complex b = __builtin_ctanhf(a);
+  return (CComplexFloat){__real__ b, __imag__ b};
+}
+
+// MARK: - complex functions for float80
+typedef struct { long double real; long double imag; } CComplexFloat80;
+
+HEADER_SHIM long double libm_cabsl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  return __builtin_cabsl(a);
+}
+
+HEADER_SHIM CComplexFloat80 libm_cacoshl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_cacoshl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM long double libm_cargl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  return __builtin_cargl(a);
+}
+
+HEADER_SHIM CComplexFloat80 libm_cacosl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_cacosl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_casinhl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_casinhl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_casinl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_casinl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_catanhl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_catanhl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_catanl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_catanl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_ccoshl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_cacoshl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_ccosl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_cacosl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_cexpl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_cexpl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM long double libm_cimagl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  return __builtin_cimagl(a);
+}
+
+HEADER_SHIM CComplexFloat80 libm_clogl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_clogl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_conjl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_conjl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_cpowl(CComplexFloat80 z, CComplexFloat80 w) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = { w.real, w.imag};
+  long double _Complex c = __builtin_cpowl(a, b);
+  return (CComplexFloat80){__real__ c, __imag__ c};
+}
+
+HEADER_SHIM CComplexFloat80 libm_cprojl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_cprojl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM long double libm_creall(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  return __builtin_creall(a);
+}
+
+HEADER_SHIM CComplexFloat80 libm_csinhl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_csinhl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_csinl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_csinl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_csqrtl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_csqrtl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_ctanhl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_ctanhl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
+
+HEADER_SHIM CComplexFloat80 libm_ctanl(CComplexFloat80 z) {
+  long double _Complex a = { z.real, z.imag};
+  long double _Complex b = __builtin_ctanl(a);
+  return (CComplexFloat80){__real__ b, __imag__ b};
+}
 #endif
