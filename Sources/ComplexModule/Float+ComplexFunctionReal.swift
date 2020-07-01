@@ -22,6 +22,7 @@ extension Float: ComplexFunctionReal {
   } 
 
   // TODO: Replace with accurate implementation
+  @_transparent
   public static func expMinusOne(_ x: Complex<Float>) -> Complex<Float> {
     exp(x) - 1
   }
@@ -76,6 +77,7 @@ extension Float: ComplexFunctionReal {
   }
 
   // TODO: Replace with accurate implementation
+  @_transparent
   public static func log(onePlus x: Complex<Float>) -> Complex<Float> {
     log(1 + x)
   }
