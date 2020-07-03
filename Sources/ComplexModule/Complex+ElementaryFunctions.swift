@@ -37,7 +37,7 @@ extension Complex: ElementaryFunctions {
 
     @_transparent
     public static func sqrt(_ x: Self) -> Self {
-        Complex.exp(Complex.log(x).divided(by: RealType(2)))
+        Complex(RealType.cos(x.phase/2), RealType.sin(x.phase/2)).multiplied(by: RealType.sqrt(x.length))
     }
 
     @_transparent
@@ -88,12 +88,7 @@ extension Complex: ElementaryFunctions {
             RealType.cosh(x.real) * RealType.sin(x.imaginary)
         )
     }
-/*
-public func tanh<T>(z: Complex<T>) -> Complex<T> {
-    let ez = exp(z), e_z = exp(-z)
-    return (ez - e_z) / (ez + e_z)
-}
-*/
+
     @_transparent
     public static func tanh(_ x: Self) -> Self {
         let a = Complex.sinh(x) / Complex.cosh(x)
@@ -109,7 +104,7 @@ public func tanh<T>(z: Complex<T>) -> Complex<T> {
 
     @_transparent
     public static func asin(_ x: Self) -> Self {
-        let a = Complex.sqrt(Complex.one - x * x)
+        let a = Complex.sqrt(Complex.one - (x * x))
         return -Complex.i * Complex.log(Complex.i * x + a)
     }
 
