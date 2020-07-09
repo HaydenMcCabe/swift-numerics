@@ -20,9 +20,14 @@ extension Complex: ElementaryFunctions {
         return a.multiplied(by: .exp(x.real))
     }
 
-    // Todo: replace
     public static func expMinusOne(_ x: Self) -> Self {
-        .exp(x - .one)
+        let (x, y) = (x.real, x.imaginary)
+        let a = RealType.expMinusOne(x)
+        let c = RealType.cos(y)
+        let s = RealType.sin(y)
+        let u = a*c - s*s / (1 + c)
+        let v = a*s + s
+        return Self(u, v)
     }
 
     @_transparent
@@ -50,26 +55,12 @@ extension Complex: ElementaryFunctions {
         Complex(RealType.log(x.length), x.phase)
     }
 
-    /// This function uses a Taylor series to find an approximation
-    /// of ln(1 + x) for very small x, i.e., for values close to zero.
     public static func log(onePlus x: Self) -> Self {
-        let maxIterations = 40
-        var n = 0
-        var approx = x
-        var prior = x
-        var z = x
-        let zz = x * x
-        var f = 1
-        repeat {
-            n += 1
-            prior = approx
-            z *= zz
-            f *= (2*n) * (2*n + 1)
-            let term = z.multiplied(by: 1 / RealType(f))
-            approx += (n % 2 == 0) ? term : -term
-        } while approx != prior && n < maxIterations
-        print(n)
-        return approx
+        let (x, y) = (x.real, x.imaginary)
+        let a = x*x + y*y + 2*x
+        let u = RealType.log(onePlus: a) / 2
+        let v = RealType.atan2(y: y, x: x+1)
+        return Self(u, v)
     }
 
     @_transparent
@@ -144,64 +135,34 @@ extension Complex: ElementaryFunctions {
             } while prior != approx && n < maxIterations
             return approx
         } else {
-            let a = Complex(RealType.pi/2) - .acos(x)
-            return a.isZero ? x : a
+            return Complex(RealType.pi/2) - .acos(x)
         }
     }
 
     @_transparent
     public static func atan(_ x: Self) -> Self {
-        //if x.length < RealType(1)/2 {
-        if true {
-            let maxIterations = 40
-            var approx = x
-            var prior = x
-            var n = 0
-            var z = x
-            let zz = x * x
-            repeat {
-                n += 1
-                prior = approx
-                z *= zz
-                let term = z.divided(by: RealType(2 * n + 1))
-                approx += (n % 2 == 0) ? term : -term
-            } while prior != approx && n < maxIterations
-            return approx
+        let iz = Complex.i * x
+        if x.length < RealType(1) {
+            return Complex.i * (Complex.log(onePlus: -iz) - Complex.log(onePlus: iz)).divided(by: 2)
         } else {
-            let a = (.i - x) / (.i + x)
-            return -.log(a) * Complex.i.divided(by: 2)
+            return Complex.i * (Complex.log(.one - iz) - Complex.log(.one + iz)).divided(by: 2)
         }
     }
-
+    
    @_transparent
     public static func acosh(_ x: Self) -> Self {
-        let a = Complex.i.multiplied(by: 
-            RealType(signOf: x.imaginary, magnitudeOf: 1))
+        let a = x.imaginary >= 0 ? Complex.i : -Complex.i
         return a * .acos(x)
     }
     
     @_transparent
     public static func asinh(_ x: Self) -> Self {
-        -.i * .asin(.i * x)
+        -.i * .asin(Complex(-x.imaginary, x.real))
     }
 
     @_transparent
     public static func atanh(_ x: Self) -> Self {
-        return -.i * .atan(.i * x)
-        let maxIterations = 40
-        var approx = x
-        var prior = x
-        var n = 0
-        var z = x
-        let zz = x * x
-        repeat {
-            n += 1
-            prior = approx
-            z *= zz
-            let term = z.divided(by: RealType(2 * n + 1))
-            approx += term
-        } while prior != approx && n < maxIterations
-        return approx
+        -.i * .atan(.i * x)
     }
 }
 
@@ -210,20 +171,20 @@ extension Complex where RealType: ComplexFunctionReal {
     public static func exp_builtin(_ x: Self) -> Self {
         RealType.exp(x)
     }
-
+    
     @_transparent
-    public static func cosh_builtin(_ x: Self) -> Self {
-        RealType.cosh(x)
+    public static func pow_builtin(_ x: Self, _ y: Self) -> Self {
+        RealType.pow(x, y)
     }
 
     @_transparent
-    public static func sinh_builtin(_ x: Self) -> Self {
-        RealType.sinh(x)
+    public static func sqrt_builtin(_ x: Self) -> Self {
+        RealType.sqrt(x)
     }
 
     @_transparent
-    public static func tanh_builtin(_ x: Self) -> Self {
-        RealType.tanh(x)
+    public static func log_builtin(_ x: Self) -> Self {
+        RealType.log(x)
     }
 
     @_transparent
@@ -242,23 +203,18 @@ extension Complex where RealType: ComplexFunctionReal {
     }
 
     @_transparent
-    public static func log_builtin(_ x: Self) -> Self {
-        RealType.log(x)
+    public static func cosh_builtin(_ x: Self) -> Self {
+        RealType.cosh(x)
     }
 
     @_transparent
-    public static func acosh_builtin(_ x: Self) -> Self {
-        RealType.acosh(x)
+    public static func sinh_builtin(_ x: Self) -> Self {
+        RealType.sinh(x)
     }
 
     @_transparent
-    public static func asinh_builtin(_ x: Self) -> Self {
-        RealType.asinh(x)
-    }
-
-    @_transparent
-    public static func atanh_builtin(_ x: Self) -> Self {
-        RealType.atanh(x)
+    public static func tanh_builtin(_ x: Self) -> Self {
+        RealType.tanh(x)
     }
 
     @_transparent
@@ -275,15 +231,20 @@ extension Complex where RealType: ComplexFunctionReal {
     public static func atan_builtin(_ x: Self) -> Self {
         RealType.atan(x)
     }
-
+    
     @_transparent
-    public static func pow_builtin(_ x: Self, _ y: Self) -> Self {
-        RealType.pow(x, y)
+    public static func acosh_builtin(_ x: Self) -> Self {
+        RealType.acosh(x)
     }
 
     @_transparent
-    public static func sqrt_builtin(_ x: Self) -> Self {
-        RealType.sqrt(x)
+    public static func asinh_builtin(_ x: Self) -> Self {
+        RealType.asinh(x)
+    }
+
+    @_transparent
+    public static func atanh_builtin(_ x: Self) -> Self {
+        RealType.atanh(x)
     }
 }
 #endif

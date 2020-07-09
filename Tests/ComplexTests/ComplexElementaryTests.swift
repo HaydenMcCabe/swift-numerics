@@ -14,6 +14,10 @@ import ComplexModule
 import RealModule
 
 #if !os(Windows)
+// MARK: Accuracy tests
+// Compare the accuracy of ComplexModule's
+// generic ElementaryFunctions operations
+// against those provided from CLang
 final class ComplexElementaryTests: XCTestCase {
 
     func randomComplex<T>(_ type: T.Type) -> Complex<T> where T: BinaryFloatingPoint, T: Real,
@@ -34,7 +38,7 @@ final class ComplexElementaryTests: XCTestCase {
     func testLogAccuracy<T>(accuracy: T)
     where T: BinaryFloatingPoint, T: ComplexFunctionReal,
         T.Exponent: FixedWidthInteger, T.RawSignificand: FixedWidthInteger  {
-        for _ in 1...10 {
+        for _ in 1...1000 {
           let argument = randomComplex(T.self)
           let result = Complex.log(argument)
           let correct = Complex.log_builtin(argument)
@@ -43,6 +47,14 @@ final class ComplexElementaryTests: XCTestCase {
           if !result.isFinite && !correct.isFinite {
             return
           }
+            
+          // If one value is finite, and the
+            // other is infinite, that
+            // is a failure
+            if result.isFinite != correct.isFinite {
+                XCTFail()
+                return
+            }
 
           // If the values are both finite, compare them
           if result.isFinite, correct.isFinite,
@@ -66,14 +78,20 @@ final class ComplexElementaryTests: XCTestCase {
     }
 
     func testLogPlusAccuracy() {
-        let arg = Complex<Double>(0.00000001)
+        let arg = Complex<Double>(0.001, 0.001)
         let ans = Complex.log(onePlus: arg)
         print(ans)
     }
+    
+    func testExpMinusOneAccuracy() {
+        let arg = Complex<Double>(0.000001, 0.000001)
+        let ans = Complex.expMinusOne(arg)
+        print(ans)
+        print("----")
+        let ans2 = Complex.exp(arg) - Complex.one
+        print(ans2)
+    }
 
-    // MARK: Accuracy tests
-    // Compare the accuracy of ComplexModule's operations
-    // against those provided from CLang
     func testFunctionAccuracy<T>(
     _ a: (Complex<T>) -> (Complex<T>),
     _ b: (Complex<T>) -> (Complex<T>),
@@ -126,7 +144,7 @@ final class ComplexElementaryTests: XCTestCase {
     testFunctionAccuracy(Complex<Float>.cos, Complex<Float>.cos_builtin, accuracy: 16)
     testFunctionAccuracy(Complex<Double>.cos, Complex<Double>.cos_builtin, accuracy: 16)
     #if (arch(i386) || arch(x86_64)) && !os(Windows) && !os(Android)
-    //testFunctionAccuracy(Complex<Float80>.cos, Complex<Float80>.cos_builtin, accuracy: 16)
+    testFunctionAccuracy(Complex<Float80>.cos, Complex<Float80>.cos_builtin, accuracy: 16)
     #endif
     }
 
@@ -151,7 +169,7 @@ final class ComplexElementaryTests: XCTestCase {
     testFunctionAccuracy(Complex<Float>.cosh, Complex<Float>.cosh_builtin, accuracy: 16)
     testFunctionAccuracy(Complex<Double>.cosh, Complex<Double>.cosh_builtin, accuracy: 16)
     #if (arch(i386) || arch(x86_64)) && !os(Windows) && !os(Android)
-    //testFunctionAccuracy(Complex<Float80>.cosh, Complex<Float80>.cosh_builtin, accuracy: 16)
+    testFunctionAccuracy(Complex<Float80>.cosh, Complex<Float80>.cosh_builtin, accuracy: 16)
     #endif
     }
 
@@ -189,12 +207,11 @@ final class ComplexElementaryTests: XCTestCase {
     #endif
     }
 
-    // TODO: Check Double precision and Float80 calculation
     func testAtanAccuracy() {
     testFunctionAccuracy(Complex<Float>.atan, Complex<Float>.atan_builtin, accuracy: 16)
     testFunctionAccuracy(Complex<Double>.atan, Complex<Double>.atan_builtin, accuracy: 16)
     #if (arch(i386) || arch(x86_64)) && !os(Windows) && !os(Android)
-    //testFunctionAccuracy(Complex<Float80>.atan, Complex<Float80>.atan_builtin, accuracy: 16)
+    testFunctionAccuracy(Complex<Float80>.atan, Complex<Float80>.atan_builtin, accuracy: 1000)
     #endif
     }
 
